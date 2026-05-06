@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "142326281544",
+    "project_id": "giftstor-86217",
+    "storage_bucket": "giftstor-86217.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142326281544:android:ed47b419bb9fcd98126f7d",
+        "android_client_info": {
+          "package_name": "com.example.giftstore_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmmcHEI2-pRK5aeMbpIIYPO-Ibh5iAcTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
