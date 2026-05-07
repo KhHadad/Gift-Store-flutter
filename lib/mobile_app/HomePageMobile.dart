@@ -7,7 +7,8 @@ class HomePageMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('mobile'),
+      backgroundColor: Colors.brown,
+      body: Text('mobile',style: TextStyle(color: Colors.white,fontSize: 50),),
     );
   }
 }
