@@ -1,25 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'; // تأكدي من وجود هذا السطر
-
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-
-    // الحل هنا: تأكدي من تطابق هذه الأسماء تماماً
-    localizationsDelegates: [
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate, // تأكدي من كتابة Cupertino بشكل صحيح
-    ],
-    supportedLocales: [
-      Locale("ar", "AE"), // اللغة العربية
-    ],
-    locale: Locale("ar", "AE"), // ضبط الواجهة لليمين
-
-    home: LoginScreen(),
-  ));
-}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
