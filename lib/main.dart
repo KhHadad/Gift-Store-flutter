@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // هنا الفحص الذكي
       home: kIsWeb
-          ? const HomePageWeb() // واجهة الويب لصاحب العمل
-          : const HomePageMobile(),     // واجهة الموبايل للمشترين
+          ?  HomePageWeb()     // واجهة الويب لصاحب العمل
+          :  HomePageMobile(),     // واجهة الموبايل للمشترين
     );
   }
 }
