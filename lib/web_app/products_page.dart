@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 import 'edit_product_page.dart';
 import 'orders_page.dart';
+import 'add_product_page.dart';
+
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -176,14 +178,56 @@ class _ProductsPageState
 
                 children: [
 
-                  const Text(
-                    "المنتجات",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight:
-                      FontWeight.bold,
-                    ),
-                  ),
+                 Row(
+  mainAxisAlignment:
+  MainAxisAlignment.spaceBetween,
+
+  children: [
+
+    const Text(
+      "المنتجات",
+
+      style: TextStyle(
+        fontSize: 32,
+        fontWeight:
+        FontWeight.bold,
+      ),
+    ),
+
+    ElevatedButton.icon(
+
+      style:
+      ElevatedButton.styleFrom(
+        backgroundColor:
+        Colors.deepPurple,
+      ),
+
+      onPressed: () {
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+            AddProductPage(),
+          ),
+        );
+      },
+
+      icon: const Icon(
+        Icons.add,
+        color: Colors.white,
+      ),
+
+      label: const Text(
+        "إضافة منتج",
+
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    )
+  ],
+),
 
                   const SizedBox(height: 25),
 
@@ -282,19 +326,78 @@ class _ProductsPageState
                               const Spacer(),
 
                               Text(
-                                "${product["price"]} ريال",
+  "${product["price"]} ريال",
 
-                                style:
-                                const TextStyle(
-                                  color: Colors
-                                      .deepPurple,
+  style: const TextStyle(
+    color: Colors.deepPurple,
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+  ),
+),
 
-                                  fontSize: 22,
+const SizedBox(height: 15),
 
-                                  fontWeight:
-                                  FontWeight.bold,
-                                ),
-                              )
+Row(
+  mainAxisAlignment:
+  MainAxisAlignment.spaceEvenly,
+
+  children: [
+
+    /// تعديل
+    ElevatedButton(
+
+      style: ElevatedButton.styleFrom(
+        backgroundColor:
+        Colors.deepPurple,
+      ),
+
+      onPressed: () {
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+            const EditProductPage(),
+          ),
+        );
+      },
+
+      child: const Text(
+        "تعديل",
+
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    ),
+
+    /// حذف
+    ElevatedButton(
+
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
+      ),
+
+      onPressed: () {
+
+        setState(() {
+
+          products.remove(product);
+
+        });
+      },
+
+      child: const Text(
+        "حذف",
+
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    ),
+  ],
+),
+                              
                             ],
                           ),
                         );
