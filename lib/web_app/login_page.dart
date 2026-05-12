@@ -81,52 +81,99 @@ class LoginPage extends StatelessWidget {
               ),
 
               const SizedBox(height: 30),
+SizedBox(
+  width: double.infinity,
+  height: 55,
 
-              SizedBox(
-                width: double.infinity,
-                height: 55,
+  child: ElevatedButton(
 
-                child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor:
+      Colors.deepPurple,
+    ),
 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                    Colors.deepPurple,
-                  ),
+    onPressed: () async {
 
-                  onPressed: () async {
+      SharedPreferences prefs =
+      await SharedPreferences.getInstance();
 
-                    SharedPreferences prefs =
-                    await SharedPreferences.getInstance();
+      await prefs.setBool(
+          "isLoggedIn",
+          true
+      );
 
-                    await prefs.setBool(
-                        "isLoggedIn",
-                        true
-                    );
+      if (!context.mounted) return;
 
-                    if (!context.mounted) return;
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                        const ProductsPage(),
-                      ),
-                    );
-                  },
-
-                  child: const Text(
-                    "تسجيل الدخول",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+          const ProductsPage(),
         ),
+      );
+    },
+
+    child: const Text(
+      "تسجيل الدخول",
+      style: TextStyle(
+        fontSize: 18,
+        color: Colors.white,
       ),
-    );
-  }
-}
+    ),
+  ),
+),
+
+const SizedBox(height: 15),
+
+SizedBox(
+  width: double.infinity,
+  height: 55,
+
+  child: OutlinedButton(
+
+    style: OutlinedButton.styleFrom(
+      side: const BorderSide(
+        color: Colors.deepPurple,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius:
+        BorderRadius.circular(15),
+      ),
+    ),
+
+    onPressed: () async {
+      SharedPreferences prefs =
+      await SharedPreferences.getInstance();
+
+      await prefs.setBool(
+          "isLoggedIn",
+          true
+      );
+
+      if (!context.mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+          const ProductsPage(),
+        ),
+      );
+    },
+
+    child: const Text(
+      "إنشاء حساب",
+      style: TextStyle(
+        fontSize: 18,
+        color: Colors.deepPurple,
+      ),
+    ),
+  ),
+),
+    
+          ],
+        ),
+        ),
+        ),
+        );
+  }}
