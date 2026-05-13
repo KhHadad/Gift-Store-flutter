@@ -55,7 +55,7 @@ class HomePageWeb extends StatelessWidget {
 
                   const Text(
 
-                    "نظام لإدارة متجر الهدايا يساعد صاحب العمل على إدارة المنتجات والطلبات بطريقة سهلة واحترافية.",
+                    " نهديكم لحظات جميلة تُعبّر عن مشاعركم بأجمل الهدايا.",
 
                     style: TextStyle(
                       fontSize: 20,
@@ -127,7 +127,7 @@ class HomePageWeb extends StatelessWidget {
                     SizedBox(height: 30),
 
                     Text(
-                      "إدارة احترافية للهدايا",
+                      "  Gift-Store ",
 
                       style: TextStyle(
                         color: Colors.white,
