@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AddProductPage extends StatelessWidget {
 
   AddProductPage({super.key});
 
   final TextEditingController nameController =
-  TextEditingController();
+      TextEditingController();
 
   final TextEditingController priceController =
-  TextEditingController();
+      TextEditingController();
 
   final TextEditingController descController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,12 @@ class AddProductPage extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
+
         backgroundColor: Colors.deepPurple,
+
         title: const Text(
           "إضافة منتج",
+
           style: TextStyle(
             color: Colors.white,
           ),
@@ -29,21 +33,59 @@ class AddProductPage extends StatelessWidget {
       ),
 
       body: Padding(
+
         padding: const EdgeInsets.all(20),
 
         child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
+
           children: [
 
-            /// زر Excel
+            /// زر رفع ملف اكسل
             ElevatedButton.icon(
 
               style:
-              ElevatedButton.styleFrom(
+                  ElevatedButton.styleFrom(
                 backgroundColor:
-                Colors.green,
+                    Colors.green,
               ),
 
-              onPressed: () {},
+              onPressed: () async {
+
+                FilePickerResult? result =
+                    await FilePicker
+                        .platform
+                        .pickFiles(
+
+                  type: FileType.custom,
+
+                  allowedExtensions: [
+                    'xlsx',
+                    'xls'
+                  ],
+                );
+
+                if (result != null) {
+
+                  String fileName =
+                      result
+                          .files
+                          .single
+                          .name;
+
+                  ScaffoldMessenger.of(
+                          context)
+                      .showSnackBar(
+
+                    SnackBar(
+                      content: Text(
+                        "تم اختيار الملف: $fileName",
+                      ),
+                    ),
+                  );
+                }
+              },
 
               icon: const Icon(
                 Icons.upload_file,
@@ -51,7 +93,8 @@ class AddProductPage extends StatelessWidget {
               ),
 
               label: const Text(
-                "إضافة ملف Excel",
+                "إضافة ملف اكسل",
+
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -60,47 +103,112 @@ class AddProductPage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
+            /// اسم المنتج
             TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: "اسم المنتج",
+
+              controller:
+                  nameController,
+
+              decoration:
+                  InputDecoration(
+
+                labelText:
+                    "اسم المنتج",
+
+                border:
+                    OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                          15),
+                ),
               ),
             ),
 
             const SizedBox(height: 20),
 
+            /// السعر
             TextField(
-              controller: priceController,
-              decoration: const InputDecoration(
+
+              controller:
+                  priceController,
+
+              decoration:
+                  InputDecoration(
+
                 labelText: "السعر",
+
+                border:
+                    OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                          15),
+                ),
               ),
             ),
 
             const SizedBox(height: 20),
 
+            /// الوصف
             TextField(
-              controller: descController,
-              decoration: const InputDecoration(
+
+              controller:
+                  descController,
+
+              maxLines: 3,
+
+              decoration:
+                  InputDecoration(
+
                 labelText: "الوصف",
+
+                border:
+                    OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(
+                          15),
+                ),
               ),
             ),
 
             const SizedBox(height: 40),
 
-            ElevatedButton(
+            /// زر الحفظ
+            SizedBox(
 
-              style:
-              ElevatedButton.styleFrom(
-                backgroundColor:
-                Colors.deepPurple,
-              ),
+              width: double.infinity,
 
-              onPressed: () {},
+              height: 50,
 
-              child: const Text(
-                "حفظ",
-                style: TextStyle(
-                  color: Colors.white,
+              child: ElevatedButton(
+
+                style:
+                    ElevatedButton.styleFrom(
+
+                  backgroundColor:
+                      Colors.deepPurple,
+                ),
+
+                onPressed: () {
+
+                  ScaffoldMessenger.of(
+                          context)
+                      .showSnackBar(
+
+                    const SnackBar(
+                      content: Text(
+                        "تم حفظ المنتج بنجاح",
+                      ),
+                    ),
+                  );
+                },
+
+                child: const Text(
+                  "حفظ",
+
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             )
