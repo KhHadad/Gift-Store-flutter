@@ -35,6 +35,8 @@ dependencies:
   permission_handler:
   firebase_auth:
   shared_preferences:
+  file_picker: ^8.0.0
+  
 
   flutter_localizations:
     sdk: flutter
