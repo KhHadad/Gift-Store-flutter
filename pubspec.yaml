@@ -34,6 +34,7 @@ dependencies:
   cloud_firestore:
   permission_handler:
   firebase_auth:
+  google_sign_in:
   shared_preferences:
   file_picker: ^8.0.0
   
