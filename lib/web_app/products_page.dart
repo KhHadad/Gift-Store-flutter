@@ -15,7 +15,7 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
 
-  String selectedCategory = "بوكسات هدايا جاهزة";
+  String selectedCategory = "الاقسام";
 
   List<Map<String, dynamic>> products = [
 
@@ -34,7 +34,7 @@ class _ProductsPageState extends State<ProductsPage> {
     },
 
     {
-      "name": "كوب باسم",
+      "name": "كوب ",
       "price": "45",
       "category": "هدايا نسائية",
       "description": "كوب مطبوع باسم حسب الطلب"
