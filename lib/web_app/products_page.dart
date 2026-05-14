@@ -36,7 +36,7 @@ class _ProductsPageState extends State<ProductsPage> {
     {
       "name": "كوب باسم",
       "price": "45",
-      "category": "هدايا مخصصة",
+      "category": "هدايا نسائية",
       "description": "كوب مطبوع باسم حسب الطلب"
     },
 
@@ -85,7 +85,6 @@ class _ProductsPageState extends State<ProductsPage> {
         }).toList();
 
     return Scaffold(
-
       body: Row(
         children: [
 
@@ -119,16 +118,14 @@ class _ProductsPageState extends State<ProductsPage> {
 
                 menuButton("المنتجات", Icons.shopping_bag),
 
-               menuButton("تعديل البيانات", Icons.edit, () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => EditProductPage(
-        product: products[0],
-      ),
-    ),
-  );
-}),
+                menuButton("تعديل البيانات", Icons.edit, () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditProductPage(product: products[0]),
+                    ),
+                  );
+                }),
 
                 menuButton("الطلبات", Icons.receipt_long, () {
                   Navigator.push(
@@ -188,14 +185,23 @@ class _ProductsPageState extends State<ProductsPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepPurple,
                         ),
-                        onPressed: () {
-                          Navigator.push(
+
+                        onPressed: () async {
+
+                          final newProduct = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => AddProductPage(),
                             ),
                           );
+
+                          if (newProduct != null) {
+                            setState(() {
+                              products.add(newProduct);
+                            });
+                          }
                         },
+
                         icon: const Icon(Icons.add, color: Colors.white),
                         label: const Text(
                           "إضافة منتج",
@@ -207,13 +213,13 @@ class _ProductsPageState extends State<ProductsPage> {
 
                   const SizedBox(height: 20),
 
-                  /// 🔥 DROPDOWN بدل الأزرار
+                  /// DROPDOWN
                   DropdownButton<String>(
                     value: selectedCategory,
                     items: [
                       "بوكسات هدايا جاهزة",
-                      "هدايا مخصصة",
-                      "قطع هدايا",
+                      "توزيعات",
+                      "عطور",
                       "بوكيهات ورد",
                     ].map((category) {
                       return DropdownMenuItem(
@@ -221,6 +227,7 @@ class _ProductsPageState extends State<ProductsPage> {
                         child: Text(category),
                       );
                     }).toList(),
+
                     onChanged: (value) {
                       setState(() {
                         selectedCategory = value!;
@@ -241,6 +248,7 @@ class _ProductsPageState extends State<ProductsPage> {
                         mainAxisSpacing: 20,
                         childAspectRatio: 0.8,
                       ),
+
                       itemBuilder: (context, index) {
 
                         var product = filteredProducts[index];
@@ -257,6 +265,7 @@ class _ProductsPageState extends State<ProductsPage> {
                               )
                             ],
                           ),
+
                           child: Column(
                             children: [
 
@@ -299,12 +308,14 @@ class _ProductsPageState extends State<ProductsPage> {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
+
                                 children: [
 
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.deepPurple,
                                     ),
+
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -314,6 +325,7 @@ class _ProductsPageState extends State<ProductsPage> {
                                         ),
                                       );
                                     },
+
                                     child: const Text(
                                       "تعديل",
                                       style: TextStyle(color: Colors.white),
@@ -324,11 +336,13 @@ class _ProductsPageState extends State<ProductsPage> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.red,
                                     ),
+
                                     onPressed: () {
                                       setState(() {
                                         products.remove(product);
                                       });
                                     },
+
                                     child: const Text(
                                       "حذف",
                                       style: TextStyle(color: Colors.white),

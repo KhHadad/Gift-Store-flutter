@@ -15,6 +15,8 @@ class _EditProductPageState extends State<EditProductPage> {
   late TextEditingController priceController;
   late TextEditingController descController;
 
+  late String selectedCategory;
+
   @override
   void initState() {
     super.initState();
@@ -27,6 +29,10 @@ class _EditProductPageState extends State<EditProductPage> {
 
     descController =
         TextEditingController(text: widget.product["description"]);
+
+    /// 🔥 إضافة النوع القديم أو قيمة افتراضية
+    selectedCategory =
+        widget.product["category"] ?? "بوكسات هدايا جاهزة";
   }
 
   @override
@@ -72,6 +78,37 @@ class _EditProductPageState extends State<EditProductPage> {
 
             const SizedBox(height: 20),
 
+            /// 🔥 Dropdown النوع
+            DropdownButtonFormField<String>(
+              value: selectedCategory,
+              decoration: InputDecoration(
+                hintText: "نوع المنتج",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+
+              items: [
+                "بوكسات هدايا جاهزة",
+                "توزيعات",
+                "عطور",
+                "بوكيهات ورد",
+              ].map((category) {
+                return DropdownMenuItem(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+
+              onChanged: (value) {
+                setState(() {
+                  selectedCategory = value!;
+                });
+              },
+            ),
+
+            const SizedBox(height: 20),
+
             TextField(
               controller: descController,
               maxLines: 4,
@@ -96,6 +133,9 @@ class _EditProductPageState extends State<EditProductPage> {
                   widget.product["name"] = nameController.text;
                   widget.product["price"] = priceController.text;
                   widget.product["description"] = descController.text;
+
+                  /// 🔥 حفظ النوع الجديد
+                  widget.product["category"] = selectedCategory;
                 });
 
                 Navigator.pop(context);
