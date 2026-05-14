@@ -119,14 +119,16 @@ class _ProductsPageState extends State<ProductsPage> {
 
                 menuButton("المنتجات", Icons.shopping_bag),
 
-                menuButton("تعديل البيانات", Icons.edit, () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const EditProductPage(),
-                    ),
-                  );
-                }),
+               menuButton("تعديل البيانات", Icons.edit, () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => EditProductPage(
+        product: products[0],
+      ),
+    ),
+  );
+}),
 
                 menuButton("الطلبات", Icons.receipt_long, () {
                   Navigator.push(
