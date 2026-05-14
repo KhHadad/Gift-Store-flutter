@@ -1,5 +1,25 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; // تأكدي من وجود هذا السطر
+
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+
+    // الحل هنا: تأكدي من تطابق هذه الأسماء تماماً
+    localizationsDelegates: [
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate, // تأكدي من كتابة Cupertino بشكل صحيح
+    ],
+    supportedLocales: [
+      Locale("ar", "AE"), // اللغة العربية
+    ],
+    locale: Locale("ar", "AE"), // ضبط الواجهة لليمين
+
+    home: LoginScreen(),
+  ));
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -108,6 +128,50 @@ class _LoginScreenState extends State<LoginScreen> {
                             ],
                           ),
                         ),
+                        // ... الكود السابق ...
+
+                        const SizedBox(height: 50),
+
+// 1. زر الدخول الأساسي
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                print("تمت عملية الدخول بنجاح");
+                                // هنا سننتقل لصفحة البيانات الشخصية لاحقاً
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF7B1FA2),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                              elevation: 5,
+                            ),
+                            child: const Text("تسجيل دخول",
+                                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+
+                        const SizedBox(height: 15),
+
+                          // 2. زر إنشاء حساب جديد (الذي طلبتِه)
+                        TextButton(
+                          onPressed: () {
+                            print("الانتقال لصفحة إنشاء حساب جديد");
+                          },
+                          child: const Text(
+                            "ليس لديكِ حساب؟ تسجيل جديد",
+                            style: TextStyle(
+                                color: Color(0xFF7B1FA2),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16
+                            ),
+                          ),
+                        ),
+
+                          // زر جوجل
+                          // ... باقي الكود ...
                         const SizedBox(height: 50),
                         // زر الدخول
                         SizedBox(
@@ -117,6 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 print("تمت عملية الدخول بنجاح");
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfileScreen()));
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -161,4 +226,5 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
 }
