@@ -37,6 +37,7 @@ dependencies:
   google_sign_in:
   shared_preferences:
   file_picker: ^8.0.0
+  excel:
   
 
   flutter_localizations:
