@@ -15,7 +15,8 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
 
-  String selectedCategory = "الاقسام";
+  // في سطر تعريف المتغيرات أعلى الصفحة:
+  String selectedCategory = "بوكسات هدايا جاهزة";
 
   List<Map<String, dynamic>> products = [
 
