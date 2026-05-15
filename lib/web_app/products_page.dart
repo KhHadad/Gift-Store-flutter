@@ -213,28 +213,28 @@ class _ProductsPageState extends State<ProductsPage> {
 
                   const SizedBox(height: 20),
 
-                  /// DROPDOWN
-                  DropdownButton<String>(
-                    value: selectedCategory,
-                    items: [
-                      "بوكسات هدايا جاهزة",
-                      "توزيعات",
-                      "عطور",
-                      "بوكيهات ورد",
-                    ].map((category) {
-                      return DropdownMenuItem(
-                        value: category,
-                        child: Text(category),
-                      );
-                    }).toList(),
+                 const SizedBox(height: 25),
 
-                    onChanged: (value) {
-                      setState(() {
-                        selectedCategory = value!;
-                      });
-                    },
-                  ),
+Row(
+  children: [
 
+    categoryButton(
+      "بوكسات هدايا جاهزة",
+    ),
+
+    categoryButton(
+      "هدايا نسائية",
+    ),
+
+    categoryButton(
+      "قطع هدايا",
+    ),
+
+    categoryButton(
+      "بوكيهات ورد",
+    ),
+  ],
+),
                   const SizedBox(height: 30),
 
                   /// PRODUCTS GRID
@@ -372,4 +372,40 @@ class _ProductsPageState extends State<ProductsPage> {
       onTap: onTap,
     );
   }
+  Widget categoryButton(String title) {
+
+  return Padding(
+    padding: const EdgeInsets.only(right: 10),
+
+    child: ElevatedButton(
+
+      style: ElevatedButton.styleFrom(
+
+        backgroundColor:
+            selectedCategory == title
+                ? Colors.deepPurple
+                : Colors.grey.shade300,
+      ),
+
+      onPressed: () {
+
+        setState(() {
+          selectedCategory = title;
+        });
+      },
+
+      child: Text(
+
+        title,
+
+        style: TextStyle(
+          color:
+              selectedCategory == title
+                  ? Colors.white
+                  : Colors.black,
+        ),
+      ),
+    ),
+  );
+}
 }
