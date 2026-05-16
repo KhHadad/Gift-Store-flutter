@@ -32,6 +32,8 @@ class _AddProductPageState extends State<AddProductPage> {
         title: const Text("إدارة المنتجات", style: TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
+        //child
+        child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,6 +157,7 @@ class _AddProductPageState extends State<AddProductPage> {
           ],
         ),
       ),
+      )
     );
   }
 }
