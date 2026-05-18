@@ -120,8 +120,9 @@ class _EditProductPageState extends State<EditProductPage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator(color: Colors.deepPurple))
-          : Center(
-        child: Container(
+          :SingleChildScrollView(
+            child: Center(
+              child: Container(
           width: 600, // لتناسق حجم الشاشة إن فتحت لوحة التحكم من متصفح ويب أو تابلت
           margin: const EdgeInsets.all(20),
           padding: const EdgeInsets.all(30),
@@ -224,6 +225,7 @@ class _EditProductPageState extends State<EditProductPage> {
           ),
         ),
       ),
+    )
     );
   }
 }

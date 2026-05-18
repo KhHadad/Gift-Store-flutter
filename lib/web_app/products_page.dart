@@ -44,7 +44,8 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      body: Row(
+      body: SafeArea(
+        child: Row(
         children: [
           /// --- القائمة الجانبية (Side Menu) ---
           Container(
@@ -233,8 +234,10 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           )
         ],
+        )
       ),
     );
+
   }
 
   // دالة تأكيد الحذف
@@ -284,7 +287,7 @@ class _ProductsPageState extends State<ProductsPage> {
           selectedCategory = title;
           _updateStream(); // إعادة تشغيل الـ Stream للقسم الجديد
         },
-        child: Text(title, style: TextStyle(color: isSelected ? Colors.white : Colors.black87)),
+        child: Text(title, style: TextStyle(color: isSelected ? Colors.white : Colors.black87,),),
       ),
     );
   }
