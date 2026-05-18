@@ -12,7 +12,20 @@
           "package_name": "com.example.giftstore_flutter"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "142326281544-3ppoqohn2suhjvc44tbihhtrlovn1as4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.giftstore_flutter",
+            "certificate_hash": "2e33bdd9fbf8b213e373c16066305fe078fe2e56"
+          }
+        },
+        {
+          "client_id": "142326281544-rn2ssfb8ic396ecfrvn5mhlihr33nkoq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDmmcHEI2-pRK5aeMbpIIYPO-Ibh5iAcTM"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142326281544-rn2ssfb8ic396ecfrvn5mhlihr33nkoq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "142326281544-9n6d0r7csa79g435m60mchsi1gagbnc6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.giftstoreFlutter"
+              }
+            }
+          ]
         }
       }
     }

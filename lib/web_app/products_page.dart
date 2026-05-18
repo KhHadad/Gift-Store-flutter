@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // استيراد الملفات الخاصة بمشروعك (تأكد من مطابقة المسارات في مشروعك)
 import '../DatabaseMethods.dart';
+import '../firebaseAuthService.dart';
 import 'login_page.dart';
 import 'edit_product_page.dart';
 import 'orders_page.dart';
@@ -18,8 +19,9 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  String selectedCategory = "بوكسات هدايا جاهزة";
+  String selectedCategory = "بوكسات هدايا جاهزه";
   final DatabaseMethods _databaseMethods = DatabaseMethods();
+  AuthService authService=AuthService();
 
   // تعريف الـ Stream كمتغير متأخر (late) ليتم تهيئته في initState
   late Stream<QuerySnapshot> _productsStream;
@@ -57,13 +59,13 @@ class _ProductsPageState extends State<ProductsPage> {
                 const SizedBox(height: 40),
                 menuButton("المنتجات", Icons.shopping_bag, () {}),
                 menuButton("الطلبات", Icons.receipt_long, () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const OrdersPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const WebOrdersPage()));
                 }),
                 const Spacer(),
                 menuButton("تسجيل الخروج", Icons.logout, () async {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   await prefs.clear();
-                  //signOut()
+                 await authService.signOut();
                   if (!context.mounted) return;
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginPage()));
                 }),

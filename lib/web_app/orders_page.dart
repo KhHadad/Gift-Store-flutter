@@ -1,208 +1,209 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OrdersPage extends StatefulWidget {
-  const OrdersPage({super.key});
+class WebOrdersPage extends StatefulWidget {
+  const WebOrdersPage({super.key});
 
   @override
-  State<OrdersPage> createState() => _OrdersPageState();
+  State<WebOrdersPage> createState() => _WebOrdersPageState();
 }
 
-class _OrdersPageState extends State<OrdersPage> {
-
-  List<Map<String, dynamic>> orders = [
-
-    {
-      "name": "أحمد محمد",
-      "phone": "777111222",
-      "product": "بوكس شوكولاتة",
-      "price": 120,
-      "status": "جديد",
-      "accepted": false,
-      "step": 0,
-    },
-
-    {
-      "name": "سارة علي",
-      "phone": "777333444",
-      "product": "كوب باسم",
-      "price": 45,
-      "status": "جديد",
-      "accepted": false,
-      "step": 0,
-    },
-
-    {
-      "name": "ريم خالد",
-      "phone": "777555666",
-      "product": "شمعة عطرية",
-      "price": 25,
-      "status": "جديد",
-      "accepted": false,
-      "step": 0,
-    },
-  ];
-
+class _WebOrdersPageState extends State<WebOrdersPage> {
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        title: const Text(
-          "الطلبات",
-          style: TextStyle(color: Colors.white),
-        ),
+        backgroundColor: const Color(0xFF4A148C),
+        elevation: 0,
+        title: const Text("لوحة التحكم | إدارة الطلبات", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.refresh, color: Colors.white)),
+        ],
       ),
+      body: StreamBuilder<QuerySnapshot>(
+        // جلب أحدث الطلبات أولاً في الويب
+        stream: FirebaseFirestore.instance.collection("orders").orderBy("orderDate", descending: true).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: Color(0xFF4A148C)));
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("لا توجد طلبات حتى الآن"));
+          }
 
-        child: ListView.builder(
-          itemCount: orders.length,
+          return ListView.builder(
+            padding: const EdgeInsets.all(20),
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var doc = snapshot.data!.docs[index];
+              var orderData = doc.data() as Map<String, dynamic>;
+              String userId = orderData['userId'] ?? "";
 
-          itemBuilder: (context, index) {
-
-            var order = orders[index];
-
-            return Card(
-              margin: const EdgeInsets.only(bottom: 15),
-
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-
-                    /// الاسم + الرقم
-                    Text(
-                      "${order["name"]} - ${order["phone"]}",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    Text("الطلب: ${order["product"]}"),
-                    Text("السعر الإجمالي: ${order["price"]} ريال"),
-
-                    const SizedBox(height: 10),
-
-                    /// إذا لم يتم القبول
-                    if (order["accepted"] == false)
-
-                      Row(
-                        children: [
-
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                order["accepted"] = true;
-                                order["step"] = 1;
-                                order["status"] = "قيد التجهيز";
-                              });
-                            },
-                            child: const Text("قبول"),
-                          ),
-
-                          const SizedBox(width: 10),
-
-                          /// زر رفض (يتحول رمادي بعد الضغط)
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  order["status"] == "مرفوض"
-                                      ? Colors.red
-                                      : Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                order["status"] = "مرفوض";
-                                order["accepted"] = false;
-                              });
-                            },
-                            child: const Text("رفض"),
-                          ),
-                        ],
-                      )
-
-                    /// بعد القبول
-                    else
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-
-                        children: [
-
-                          const SizedBox(height: 10),
-
-                          Wrap(
-                            spacing: 10,
-                            children: [
-
-                              stepButton(order, "قيد التجهيز", 1),
-                              stepButton(order, "تم الشحن", 2),
-                              stepButton(order, "تم التسليم", 3),
-                            ],
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          Text(
-                            "الحالة الحالية: ${order["status"]}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.deepPurple,
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+              return _buildOrderCard(doc.id, orderData, userId);
+            },
+          );
+        },
       ),
     );
   }
 
-  /// زر المراحل (تجهيز → شحن → تسليم)
-  Widget stepButton(
-      Map<String, dynamic> order,
-      String text,
-      int stepNumber,
-  ) {
+  Widget _buildOrderCard(String orderId, Map<String, dynamic> orderData, String userId) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 20),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Column(
+        children: [
+          // 1. رأس الكارد: بيانات المستخدم (تجلب من مجموعة users)
+          Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: _getStatusColor(orderData['status']).withOpacity(0.1),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+            ),
+            child: FutureBuilder<DocumentSnapshot>(
+              future: FirebaseFirestore.instance.collection("users").doc(userId).get(),
+              builder: (context, userSnapshot) {
+                String userName = "جاري التحميل...";
+                String userPhone = "...";
 
-    bool isActive = order["step"] >= stepNumber;
+                if (userSnapshot.hasData && userSnapshot.data!.exists) {
+                  var userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                  userName = userData['name'] ?? "بدون اسم";
+                  userPhone = userData['phone'] ?? "بدون هاتف";
+                }
 
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isActive ? Colors.blue : Colors.grey,
+                return Row(
+                  children: [
+                    const CircleAvatar(backgroundColor: Color(0xFF4A148C), child: Icon(Icons.person, color: Colors.white)),
+                    const SizedBox(width: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(userName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        Text("هاتف: $userPhone | طلب رقم: #$orderId", style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                      ],
+                    ),
+                    const Spacer(),
+                    _buildStatusChip(orderData['status']),
+                  ],
+                );
+              },
+            ),
+          ),
+
+          // 2. محتوى الطلب: المنتجات
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("المنتجات المطلوبة:", style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                ...(orderData['items'] as List).map((item) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.card_giftcard, size: 16, color: Colors.orange),
+                      const SizedBox(width: 8),
+                      Text("${item['name']} (عدد: ${item['quantity']})"),
+                    ],
+                  ),
+                )),
+                const Divider(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("الإجمالي: ${orderData['totalPrice']} ريال",
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFAD1457))),
+                    _buildControlButtons(orderId, orderData),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
+    );
+  }
 
-      onPressed: () {
-        setState(() {
+  // أزرار التحكم في الحالات
+  Widget _buildControlButtons(String docId, Map<String, dynamic> data) {
+    if (data['status'] == "جديد") {
+      return Row(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            onPressed: () => _updateStatus(docId, "قيد التجهيز", 1, true),
+            child: const Text("قبول الطلب", style: TextStyle(color: Colors.white)),
+          ),
+          const SizedBox(width: 10),
+          TextButton(
+            onPressed: () => _updateStatus(docId, "مرفوض", 0, false),
+            child: const Text("رفض الطلب", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      );
+    } else if (data['status'] == "مرفوض") {
+      return const Text("تم رفض هذا الطلب", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold));
+    } else {
+      // أزرار المراحل
+      return Wrap(
+        spacing: 8,
+        children: [
+          _stepActionBtn(docId, "قيد التجهيز", 1, data['step']),
+          _stepActionBtn(docId, "تم الشحن", 2, data['step']),
+          _stepActionBtn(docId, "تم التسليم", 3, data['step']),
+        ],
+      );
+    }
+  }
 
-          if (stepNumber == order["step"] + 1) {
-            order["step"] = stepNumber;
-            order["status"] = text;
-          }
-        });
+  Widget _stepActionBtn(String id, String text, int step, int currentStep) {
+    bool isCurrentOrPast = currentStep >= step;
+    return ChoiceChip(
+      label: Text(text),
+      selected: isCurrentOrPast,
+      onSelected: (val) {
+        if (val) _updateStatus(id, text, step, true);
       },
+      selectedColor: Colors.blue[100],
+      labelStyle: TextStyle(color: isCurrentOrPast ? Colors.blue[900] : Colors.grey),
+    );
+  }
 
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
+  void _updateStatus(String docId, String status, int step, bool accepted) {
+    FirebaseFirestore.instance.collection("orders").doc(docId).update({
+      "status": status,
+      "step": step,
+      "accepted": accepted,
+    }).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("تم تحديث الطلب إلى: $status"), backgroundColor: Colors.black87),
+      );
+    });
+  }
+
+  // تحسينات الألوان والحالات
+  Color _getStatusColor(String? status) {
+    switch (status) {
+      case "جديد": return Colors.orange;
+      case "قيد التجهيز": return Colors.blue;
+      case "تم الشحن": return Colors.purple;
+      case "تم التسليم": return Colors.green;
+      case "مرفوض": return Colors.red;
+      default: return Colors.grey;
+    }
+  }
+
+  Widget _buildStatusChip(String? status) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: _getStatusColor(status),
+        borderRadius: BorderRadius.circular(20),
       ),
+      child: Text(status ?? "غير معروف", style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
     );
   }
 }

@@ -33,7 +33,7 @@ class _EditProductPageState extends State<EditProductPage> {
     nameController = TextEditingController(text: widget.product["name"]);
     priceController = TextEditingController(text: widget.product["price"]?.toString());
     descController = TextEditingController(text: widget.product["description"]);
-    selectedCategory = widget.product["category"] ?? "بوكسات هدايا جاهزة";
+    selectedCategory = widget.product["category"] ?? "بوكسات هدايا جاهزه";
 
     // جلب نص الصورة المشفرة الحالية من الفايرستور (حقل image)
     currentBase64Image = widget.product["image"];
@@ -189,7 +189,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 DropdownButtonFormField<String>(
                   value: selectedCategory,
                   decoration: const InputDecoration(labelText: "القسم", border: OutlineInputBorder()),
-                  items: ["بوكسات هدايا جاهزة", "توزيعات", "عطور", "بوكيهات ورد"]
+                  items: ["بوكسات هدايا جاهزه", "توزيعات", "عطور", "بوكيهات ورد"]
                       .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                       .toList(),
                   onChanged: (v) => setState(() => selectedCategory = v!),
